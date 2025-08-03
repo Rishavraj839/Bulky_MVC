@@ -12,6 +12,7 @@ namespace Bulky.Models
         [DisplayName("Category Name")]
         public string Name { get; set; }
         [DisplayName("Display Order")]
+        [Required]
         [Range(1,1000)]
         public string DisplayOrder { get; set; }
         
