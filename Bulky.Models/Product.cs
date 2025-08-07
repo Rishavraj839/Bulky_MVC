@@ -25,6 +25,7 @@ namespace Bulky.Models
         [Required]
         [Display(Name ="List Price")]
         [Range(0,10000)]
+        
         public double ListPrice { get; set; }
 
 
