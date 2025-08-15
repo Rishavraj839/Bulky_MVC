@@ -1,12 +1,12 @@
-﻿@{
-    if (ViewData.TryGetValue("ParentLayout", out var parentLayout) && parentLayout !=  null)
-    {
-        Layout = parentLayout.ToString();
-    }
-    else
-    {
-        Layout = "/Views/Shared/_Layout.cshtml";
-    }
+﻿﻿@{
+if (ViewData.TryGetValue("ParentLayout", out var parentLayout) && parentLayout != null)
+{
+    Layout = parentLayout.ToString();
+}
+else
+{
+    Layout = "/Views/Shared/_Layout.cshtml";
+}
 }
 
 <h1>Manage your account</h1>
