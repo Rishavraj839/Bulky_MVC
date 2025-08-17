@@ -1,12 +1,13 @@
-﻿using System;
+﻿using Bulky.DataAccess.Data;
+using Bulky.DataAccess.Repository.IRepository;
+using Microsoft.EntityFrameworkCore;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
 using System.Text;
 using System.Threading.Tasks;
-using Bulky.DataAccess.Data;
-using Bulky.DataAccess.Repository.IRepository;
-using Microsoft.EntityFrameworkCore;
+using static Microsoft.EntityFrameworkCore.DbLoggerCategory;
 
 namespace Bulky.DataAccess.Repository
 {
@@ -26,15 +27,27 @@ namespace Bulky.DataAccess.Repository
             _db.Add(entity);
         }
 
-        public T Get(Expression<Func<T, bool>> filter, string? includeproperties = null)
+        public T Get(Expression<Func<T, bool>> filter, string? includeproperties = null,bool tracked=false)
         {
             IQueryable<T> query = dbSet;
+            if (tracked)
+            {
+                query = dbSet;
+                
+
+            }
+            else
+            {
+                query = dbSet.AsNoTracking();
+                
+            }
+
             query = query.Where(filter);
             if (!string.IsNullOrEmpty(includeproperties))
             {
                 foreach (var includeProp in includeproperties.Split(new char[] { ',' }
                 , StringSplitOptions.RemoveEmptyEntries))
-                    {
+                {
                     query = query.Include(includeProp);
                 }
             }
@@ -42,9 +55,13 @@ namespace Bulky.DataAccess.Repository
 
         }
 
-        public IEnumerable<T> GetAll(string? includeproperties=null)
+        public IEnumerable<T> GetAll(Expression<Func<T, bool>>? filter, string? includeproperties=null)
         {
             IQueryable<T> query = dbSet;
+            if (filter != null)
+            {
+                query = query.Where(filter);
+            }
             if (!string.IsNullOrEmpty(includeproperties))
             {
                 foreach (var includeProp in includeproperties.Split(new char[] { ',' }
